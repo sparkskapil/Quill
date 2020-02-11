@@ -1,20 +1,10 @@
 #pragma once
 #include <vector>
-
-#include "CoreSym.h"
-#include "Vertex2.h"
+#include "Core/API/QuillTypes.h"
+#include "Core/API/CoreSym.h"
+#include "Core/API/Vertex2.h"
 
 class IRenderer; 
-
-enum class DrawModes
-{
-	DRAWN,
-	DRAWING,
-	EDITING,
-	SELECTED
-};
-
-typedef unsigned ShapeId;
 
 class MODELAPI IShape
 {
@@ -36,6 +26,8 @@ public:
 	virtual void ReplaceVertex(int index, Vertex2 newVertex) = 0;
 	virtual bool IsFinished() const = 0;
 	virtual const std::vector<Vertex2>& GetVertices() const;
+
+	virtual IShape* clone() const = 0;
 
 	ShapeId GetId() const;
 	void SetRenderer(IRenderer* renderer);

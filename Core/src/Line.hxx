@@ -17,6 +17,8 @@ public:
 	virtual void ReplaceVertex(int index, Vertex2 newVertex) override;
 	virtual bool IsFinished() const override;
 
+	virtual IShape* clone() const override;
+
 protected:
 
 

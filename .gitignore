@@ -2,3 +2,4 @@ bin
 bin-int
 raylib_cheatsheet
 .vs
+/Logger/x64/Debug

@@ -37,7 +37,8 @@ IShape::IShape(ShapeId id) : m_renderer(nullptr), m_vertices({}), m_id(id)
 
 IShape::~IShape()
 {
-	m_renderer->clear(m_id);
+	if(m_renderer)
+		m_renderer->clear(m_id);
 	m_vertices.clear();
 }
 

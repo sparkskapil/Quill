@@ -2,18 +2,18 @@
 
 Line::Line() : isFinished(true)
 {
-	m_vertices.reserve(2);
+	m_vertices.reserve(MAX_VERTICES);
 }
 
 Line::Line(ShapeId id): IShape(id), isFinished(true)
 {
-	m_vertices.reserve(2);
+	m_vertices.reserve(MAX_VERTICES);
 }
 
 Line::Line(std::initializer_list<Vertex2> list) : isFinished(true)
 {
-	if (list.size() == 2) {
-		m_vertices.reserve(2);
+	if (list.size() == MAX_VERTICES) {
+		m_vertices.reserve(MAX_VERTICES);
 		m_vertices.insert(m_vertices.begin(), list.begin(), list.end());
 	}
 	else
@@ -68,4 +68,12 @@ void Line::ReplaceVertex(int index, Vertex2 newVertex)
 bool Line::IsFinished() const
 {
 	return isFinished;
+}
+
+IShape* Line::clone() const
+{
+	Line* line = new Line(-1);
+	line->isFinished = isFinished;
+	line->m_vertices.insert(line->m_vertices.begin(), m_vertices.begin(), m_vertices.end());
+	return line;
 }

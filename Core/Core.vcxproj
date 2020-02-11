@@ -147,20 +147,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Events\EventSystem.cpp" />
     <ClCompile Include="src\Shape.cpp" />
     <ClCompile Include="src\Line.cpp" />
     <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="API\CoreSym.h" />
-    <ClInclude Include="Events\Event.h" />
+    <ClInclude Include="API\QuillTypes.h" />
     <ClInclude Include="API\Renderer.h" />
     <ClInclude Include="API\Shape.h" />
     <ClInclude Include="API\Vertex2.h" />
-    <ClInclude Include="Events\EventCallback.h" />
-    <ClInclude Include="Events\EventSystem.h" />
-    <ClInclude Include="Events\MouseEvent.h" />
     <ClInclude Include="src\Line.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
