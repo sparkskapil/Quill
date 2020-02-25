@@ -1,6 +1,8 @@
 #include "Project.h"
 #include "Tool.h"
 
+using namespace EventSystem;
+
 auto& eventSystem = FetchEventSystem();
 
 Project::Project()

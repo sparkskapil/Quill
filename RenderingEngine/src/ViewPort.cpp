@@ -8,6 +8,7 @@
 #include "Renderer.hxx"
 #include <future>
 
+using namespace EventSystem;
 auto& eventSystem = FetchEventSystem();
 
 IViewPort& FetchViewPort()
@@ -293,6 +294,12 @@ bool ViewPort::onMouseMoved(MouseMovedEvent& event)
 
 bool ViewPort::onMousePressed(MouseButtonPressedEvent& event)
 {
+	if (event.GetMouseButton() == MouseCode::RIGHT)
+	{
+		auto screenBuffer = GetScreenData();
+		return false;
+	}
+
 	Vector2 vertex = Vector2{ (float)event.GetMousePosition().x, (float)event.GetMousePosition().y };
 	vertex -= camera.offset;
 	vertex += (camera.target * (camera.zoom - 1));
