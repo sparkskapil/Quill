@@ -21,6 +21,7 @@ public:
 
 	virtual void setup() override;
 	virtual void draw() override;
+	virtual void* GetFrameBuffer(int &width, int &height) override;
 
 	virtual void handleEvents() override;
 	virtual MousePosition WindowPointToPixel(MousePosition& windowPoint) override;
@@ -41,6 +42,8 @@ private:
 	Camera2D camera = {0}; 
 	IRenderer* m_renderer;
 
+	bool currentFrameBuffer;
+	Image image;
 	//Event Delegates
 	IEventCallback* MouseScrollCallback;
 	IEventCallback* MouseMoveCallback;

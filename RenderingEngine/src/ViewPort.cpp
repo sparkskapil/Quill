@@ -31,6 +31,7 @@ ViewPort::ViewPort()
 	FetchEventSystem().RegisterMouseMovedEvent(*MouseMoveCallback);
 	MousePressedCallback = new EventCallback<ViewPort, MouseButtonPressedEvent>(this, &ViewPort::onMousePressed);
 	FetchEventSystem().RegisterMouseButtonPressedEvent(*MousePressedCallback);
+	currentFrameBuffer = false;
 
 	m_renderer = new Renderer(*this);
 }
@@ -40,6 +41,8 @@ ViewPort::~ViewPort()
 	FetchEventSystem().Unregister(MouseScrollCallback);
 	FetchEventSystem().Unregister(MouseMoveCallback);
 	FetchEventSystem().Unregister(MousePressedCallback);
+
+	currentFrameBuffer = false;
 }
 
 
@@ -108,7 +111,7 @@ void ViewPort::setup()
 	camera.offset = { screenWidth / 2.0f, screenHeight / 2.0f };
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
-
+	SetConfigFlags(FLAG_WINDOW_HIDDEN);
 	InitWindow(screenWidth, screenHeight, "Quill");
 	SetWindowPosition(0, 40);
 	SetExitKey(KEY_GRAVE);
@@ -133,18 +136,39 @@ void ViewPort::setup()
 
 void ViewPort::draw()
 {
+	int framesCount = 0;
+
+	//unsigned char R = 0;
+	//unsigned char G = 0;
+	//unsigned char B = 0;
+
+	int i = 0;
 	while (!WindowShouldClose())
 	{
 		handleEvents();
 		BeginDrawing();
 		BeginMode2D(camera);
-		ClearBackground(DARKGRAY);
+		
+		Color colors[] = { RED, GRAY, BLUE };
+		
+		if (framesCount % 120 == 0)
+		{
+			i =( i + 1 )% 3;
+		}
+		ClearBackground(colors[i]);
 		for (auto& entity : m_entities)
 		{
 			entity.second->Render();
 		}
 		EndMode2D();
 		EndDrawing();
+		if (currentFrameBuffer)
+		{
+			TakeScreenshot("./Frame.png");
+			currentFrameBuffer = false;
+			image = GetScreenData();
+		}
+		framesCount++;
 	}
 	CloseWindow();
 
@@ -164,6 +188,21 @@ void ViewPort::draw()
 			DrawLine(0, offset + int(mm / dp), 0 + len, offset + int(mm / dp), RAYWHITE);
 	}
 	EndDrawing();*/
+}
+
+void* ViewPort::GetFrameBuffer(int& width, int& height)
+{
+	/*width = screenBuffer.width;
+	height = screenBuffer.height;*/
+	//TakeScreenshot("./Frame.png");
+	width = GetScreenWidth();
+	height = GetScreenHeight();
+	currentFrameBuffer = true;
+	while (currentFrameBuffer);
+
+	return image.data;
+
+	//return nullptr;
 }
 
 
@@ -294,12 +333,6 @@ bool ViewPort::onMouseMoved(MouseMovedEvent& event)
 
 bool ViewPort::onMousePressed(MouseButtonPressedEvent& event)
 {
-	if (event.GetMouseButton() == MouseCode::RIGHT)
-	{
-		auto screenBuffer = GetScreenData();
-		return false;
-	}
-
 	Vector2 vertex = Vector2{ (float)event.GetMousePosition().x, (float)event.GetMousePosition().y };
 	vertex -= camera.offset;
 	vertex += (camera.target * (camera.zoom - 1));

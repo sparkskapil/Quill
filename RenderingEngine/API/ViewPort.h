@@ -23,6 +23,7 @@ public:
 	virtual void draw() = 0;
 
 	virtual void handleEvents() = 0;
+	virtual void* GetFrameBuffer(int& width, int& height) = 0;
 
 	virtual MousePosition WindowPointToPixel(MousePosition& windowPoint) = 0;
 };
