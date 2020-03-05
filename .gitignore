@@ -2,4 +2,11 @@ bin
 bin-int
 raylib_cheatsheet
 .vs
-/Logger/x64/Debug
+[dD]ebug
+[rR]elease
+[oO]bj
+[pP]ackages
+
+
+!vendor/raylib/x64/bin
+!vendor/raylib/Win32/bin
