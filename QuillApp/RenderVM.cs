@@ -1,39 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Interop;
 using System.Threading;
 using System.Drawing;
 using System.Windows.Media.Imaging;
-using System.Windows;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace QuillApp
 {
-    public static class BitmapConversion
-    {
-        public static BitmapSource BitmapToBitmapSource(Bitmap source)
-        {
-            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                          source.GetHbitmap(),
-                          IntPtr.Zero,
-                          Int32Rect.Empty,
-                          BitmapSizeOptions.FromEmptyOptions());
-        }
-
-        public static BitmapSource BitmapToBitmapSource(IntPtr source)
-        {
-            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                          source,
-                          IntPtr.Zero,
-                          Int32Rect.Empty,
-                          BitmapSizeOptions.FromEmptyOptions());
-        }
-    }
     public class RelayCommand<T> : ICommand
     {
         private readonly Predicate<T> _canExecute;
@@ -71,66 +47,77 @@ namespace QuillApp
     }
     class RenderVM : INotifyPropertyChanged
     {
-        private BitmapSource frame;
+        private BitmapImage image;
+
         private NativeEngine.WpfViewPort vp;
+
         private Thread renderThread;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public delegate void RenderEventHandler();
-        //public event RenderEventHandler ForceRender;
-
-        private ICommand _mouseClick;
-        public ICommand MouseClick
+        public BitmapImage Image
         {
-            get
-            {
-                return _mouseClick ?? (_mouseClick = new RelayCommand<object>(
-                          x => { OnRender(); }));
-            }
-        }
-        public BitmapSource Frame
-        {
-            get { return frame; }
+            get { return image; }
             set
             {
-                frame = value;
+                image = value;
                 OnPropertyChanged();
             }
         }
-       
-
         public RenderVM()
         {
             vp = new NativeEngine.WpfViewPort();
-            //ForceRender += OnRender;
+
             renderThread = new Thread(() =>
             {
                 vp.setup();
-                vp.draw();
+                while (true)
+                {
+                    var start = DateTime.UtcNow;
+                    if (vp.frame())
+                        break;
+                    var end = DateTime.UtcNow;
+                    OnRender();
 
+
+                    var duration = (end - start).Milliseconds;
+                    int a = 1;
+                }
             });
+
             renderThread.Start();
-            OnRender();
         }
 
-        protected void OnRender()
+        private Bitmap CreateBitmapFromBuffer(int width, int height)
         {
-            //   System.IO.File.Copy(@"./Frame.png", @"./Frame1.png");
-            unsafe{
-                int width = 0, height = 0;
-                var frame = vp.GetFramBuffer(ref width, ref height);
-                var buffer = (IntPtr)frame;
-                if(frame != null)
-                    Frame = BitmapConversion.BitmapToBitmapSource(buffer);
-                else
-                {
-                    Bitmap bitmap = (Bitmap)Bitmap.FromFile(@"./Frame.png", true);
-                    Frame = BitmapConversion.BitmapToBitmapSource(bitmap);
-                    bitmap.Dispose();
+            Bitmap bitmap = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            Rectangle rect = new Rectangle(0, 0, width, height);
+            BitmapData data = bitmap.LockBits(rect, ImageLockMode.WriteOnly, bitmap.PixelFormat);
+            int padding = data.Stride - 3 * width;
+            IntPtr buffer = data.Scan0;
 
-                }
+            vp.GetFrameBuffer(ref buffer, ref width, ref height);
+            bitmap.UnlockBits(data);
+
+            return bitmap;
+        }
+        protected void OnRender()
+        {   
+            int width = 1920, height = 990;
+            var bitmap = CreateBitmapFromBuffer(width, height);
+            using (var memory = new MemoryStream())
+            {
+                bitmap.Save(memory, ImageFormat.Png);
+                memory.Position = 0;
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memory;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+                bitmapImage.Freeze();
+                Image = bitmapImage;
             }
-            
+            bitmap.Dispose();
         }
 
         // Create the OnPropertyChanged method to raise the event

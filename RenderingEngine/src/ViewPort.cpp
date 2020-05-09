@@ -1,12 +1,9 @@
-#include <algorithm>
-#include <fstream>
 #include "RenderingEngine/API/Commons.h"
 #include "API/DisplayEntity.h"
 #include "ViewPort.hxx"
 #include "SimpleEntity.hxx"
 #include "Core/src/Line.hxx"
 #include "Renderer.hxx"
-#include <future>
 
 using namespace EventSystem;
 auto& eventSystem = FetchEventSystem();
@@ -34,6 +31,7 @@ ViewPort::ViewPort()
 	currentFrameBuffer = false;
 
 	m_renderer = new Renderer(*this);
+	image.data = nullptr;
 }
 
 ViewPort::~ViewPort()
@@ -132,46 +130,8 @@ void ViewPort::setup()
 		}
 	}*/
 
-}
 
-void ViewPort::draw()
-{
-	int framesCount = 0;
-
-	//unsigned char R = 0;
-	//unsigned char G = 0;
-	//unsigned char B = 0;
-
-	int i = 0;
-	while (!WindowShouldClose())
-	{
-		handleEvents();
-		BeginDrawing();
-		BeginMode2D(camera);
-		
-		Color colors[] = { RED, GRAY, BLUE };
-		
-		if (framesCount % 120 == 0)
-		{
-			i =( i + 1 )% 3;
-		}
-		ClearBackground(colors[i]);
-		for (auto& entity : m_entities)
-		{
-			entity.second->Render();
-		}
-		EndMode2D();
-		EndDrawing();
-		if (currentFrameBuffer)
-		{
-			TakeScreenshot("./Frame.png");
-			currentFrameBuffer = false;
-			image = GetScreenData();
-		}
-		framesCount++;
-	}
-	CloseWindow();
-
+	//Draw
 	/*BeginDrawing();
 
 	for (auto& mm : millimeters)
@@ -190,19 +150,58 @@ void ViewPort::draw()
 	EndDrawing();*/
 }
 
+void ViewPort::draw()
+{
+	while (!frame());
+}
+
+bool ViewPort::frame()
+{
+	auto currentTime = std::chrono::high_resolution_clock::now();
+	auto frameTime = currentTime - m_time;
+	auto fps = (int)(1 / (frameTime.count() / 1e+9));
+	m_time = currentTime;
+	std::string FPS_TEXT = "60"; std::to_string(fps);
+
+	if (WindowShouldClose())
+		CloseWindow();
+	else {
+		handleEvents();
+		BeginDrawing();
+		BeginMode2D(camera);
+		
+
+		static Color c = { 0,0,0,0 };
+		static int count = 0;
+		c.b += 1;
+		c.g += 2;
+		c.r += 3;
+		(c.b) %= 256;
+		(c.g) %= 256;
+		(c.r) %= 256;
+		count++;
+		ClearBackground(c);
+		
+		//DrawText(FPS_TEXT.c_str(), GetScreenWidth() / 2, GetScreenHeight() / 2, 72, RAYWHITE);
+		for (auto& entity : m_entities)
+		{
+			entity.second->Render();
+		}
+
+		EndMode2D();
+		DrawFPS(GetScreenWidth() / 2, GetScreenHeight() / 2);
+		EndDrawing();
+	}
+	
+	return WindowShouldClose();
+}
+
 void* ViewPort::GetFrameBuffer(int& width, int& height)
 {
-	/*width = screenBuffer.width;
-	height = screenBuffer.height;*/
-	//TakeScreenshot("./Frame.png");
 	width = GetScreenWidth();
 	height = GetScreenHeight();
-	currentFrameBuffer = true;
-	while (currentFrameBuffer);
-
+	image = GetScreenData();
 	return image.data;
-
-	//return nullptr;
 }
 
 

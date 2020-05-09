@@ -13,7 +13,7 @@
 
     </Window.Resources>
     <Grid DataContext="{StaticResource renderVM}">
-        <Image x:Name="imgelt" Source="{Binding Frame, Mode=TwoWay, NotifyOnSourceUpdated=True}">
+        <Image x:Name="imgelt" Source="{Binding Image, Mode=TwoWay, NotifyOnSourceUpdated=True}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseLeftButtonDown">
                     <i:InvokeCommandAction Command="{Binding MouseClick}"  />

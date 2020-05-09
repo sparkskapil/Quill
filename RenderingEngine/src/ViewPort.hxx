@@ -5,6 +5,8 @@
 #include "raylib.h"
 #include "EventSystem/API/EventSystem.h"
 
+#include <chrono>
+
 //Raylib ViewPort Class
 class ViewPort :public IViewPort
 {
@@ -21,6 +23,8 @@ public:
 
 	virtual void setup() override;
 	virtual void draw() override;
+	virtual bool frame() override;
+
 	virtual void* GetFrameBuffer(int &width, int &height) override;
 
 	virtual void handleEvents() override;
@@ -48,4 +52,6 @@ private:
 	IEventCallback* MouseScrollCallback;
 	IEventCallback* MouseMoveCallback;
 	IEventCallback* MousePressedCallback;
+
+	std::chrono::time_point<std::chrono::steady_clock> m_time = std::chrono::high_resolution_clock::now();
 };

@@ -2,6 +2,8 @@
 
 #include "NativeEngine.h"
 #include "RenderingEngine/API/DisplayEntity.h"
+#include <chrono>
+#include <fstream>
 
 namespace NativeEngine
 {
@@ -50,27 +52,45 @@ namespace NativeEngine
 		vp->draw();
 	}
 
-	int32_t* WpfViewPort::GetFramBuffer(Int32% width, Int32% height)
+	bool WpfViewPort::frame()
+	{
+		return vp->frame();
+	}
+
+	int32_t* WpfViewPort::GetFrameBuffer(Int32% width, Int32% height)
 	{
 		int w, h;
-		return (int32_t*)vp->GetFrameBuffer(w, h);
-		/*if (!buffer) return NULL;
-		std::vector<uint32_t> pixels;
+		auto data = (int32_t*)vp->GetFrameBuffer(w, h);
+		width = w;
+		height = h;
+		return data;
+	}
 
-		pixels.reserve(w*h);
-		for (int i = 0; i < h; i++)
+	void WpfViewPort::GetFrameBuffer(IntPtr% ptr, Int32% width, Int32% height)
+	{
+		Byte* bytes = (Byte*)ptr.ToPointer();
+
+		int w, h;
+
+		auto data = (int32_t*)vp->GetFrameBuffer(w, h);
+		
+		width = w;
+		height = h;
+		if (!data) return;
+
+		for (int i = 0; i < height; i++)
 		{
-			for (int j = 0; j < w; j++)
+			for (int j = 0; j < width; j++)
 			{
-				pixels.emplace_back(buffer[i*w + j]);
-				int8_t R = buffer[i * w + j] & 0xFF000000;
-				int8_t G = buffer[i * w + j] & 0x00FF0000;
-				int8_t B = buffer[i * w + j] & 0x0000FF00;
-				int8_t A = buffer[i * w + j] & 0x000000FF;
-				int a = 0;
+				auto color = data[i * width + j];
+				bytes[2] = (Byte)(Int32)((0xFF000000 & color) >> 24);
+				bytes[1] = (Byte)(Int32)((0x00FF0000 & color) >> 16);
+				bytes[0] = (Byte)(Int32)((0x0000FF00 & color) >> 8);
+				bytes += 3;
 			}
-		}*/
-		//return (int32_t*)buffer;
+		}
+		delete ((void*)data);
+		data = nullptr;
 	}
 
 	void WpfViewPort::handleEvents()
@@ -82,5 +102,5 @@ namespace NativeEngine
 	{
 		return vp->WindowPointToPixel(windowPoint);
 	}
-		
+
 }

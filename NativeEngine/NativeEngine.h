@@ -21,7 +21,11 @@ namespace NativeEngine {
 
 		void setup();
 		void draw();
-		int32_t* GetFramBuffer(Int32% width, Int32% height);
+		bool frame();
+
+		int32_t* GetFrameBuffer(Int32% width, Int32% height);
+
+		void GetFrameBuffer(IntPtr% bytes, Int32% width, Int32% height);
 
 		void handleEvents();
 		MousePosition WindowPointToPixel(MousePosition& windowPoint);
