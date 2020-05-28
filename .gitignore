@@ -1,5 +1,12 @@
+.vs
+
 bin
 bin-int
 raylib_cheatsheet
-.vs
-/Logger/x64/Debug
+
+[Rr]elease
+[Dd]ebug
+[Oo]bj
+
+!vendor/**
+packages
