@@ -21,10 +21,12 @@ public:
 
 	virtual void setup() = 0;
 	virtual void draw() = 0;
+	virtual void initInterface() = 0;
+	virtual void drawInterface() = 0;
 
 	virtual void handleEvents() = 0;
 
-	virtual MousePosition WindowPointToPixel(MousePosition& windowPoint) = 0;
+	virtual MousePosition WindowPointToPixel(const MousePosition& windowPoint) = 0;
 };
 
 DLLEXPORT IViewPort& FetchViewPort();

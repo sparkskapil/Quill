@@ -26,6 +26,9 @@ Project::~Project()
 
 bool Project::onDrawPoint(MouseButtonPressedEvent& event)
 {
+	if (event.GetMouseButton() != MouseCode::LEFT)
+		return false;
+
 	MousePosition pos = event.GetMousePosition();
 	pos = m_vp->WindowPointToPixel(pos);
 

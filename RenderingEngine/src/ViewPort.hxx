@@ -21,9 +21,11 @@ public:
 
 	virtual void setup() override;
 	virtual void draw() override;
+	virtual void initInterface() override;
+	virtual void drawInterface() override;
 
 	virtual void handleEvents() override;
-	virtual MousePosition WindowPointToPixel(MousePosition& windowPoint) override;
+	virtual MousePosition WindowPointToPixel(const MousePosition& windowPoint) override;
 
 private:
 	void handleMouseEvents();
@@ -34,15 +36,20 @@ private:
 	bool onMouseScrolled(MouseScrolledEvent& event);
 	bool onMouseMoved(MouseMovedEvent& event);
 	bool onMousePressed(MouseButtonPressedEvent& event);
-
+	bool onMouseReleased(MouseButtonReleasedEvent& event);
 
 private:
 	std::map<ShapeId,DisplayEntity*> m_entities;
 	Camera2D camera = {0}; 
 	IRenderer* m_renderer;
 
+	bool panMode = false;
+	Vector2 panStart = { -1,-1 };
+
 	//Event Delegates
 	IEventCallback* MouseScrollCallback;
 	IEventCallback* MouseMoveCallback;
 	IEventCallback* MousePressedCallback;
+	IEventCallback* MouseReleasedCallback;
+
 };

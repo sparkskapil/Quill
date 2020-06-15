@@ -8,6 +8,14 @@
 #include "Renderer.hxx"
 #include <future>
 
+namespace RayGUI
+{
+		// User Interface With RayRayGUI::Gui
+	#define RAYGUI_IMPLEMENTATION
+	#define RAYGUI_SUPPORT_ICONS
+	#include "vendor/raygui/src/raygui.h"
+
+}
 using namespace EventSystem;
 auto& eventSystem = FetchEventSystem();
 
@@ -31,6 +39,8 @@ ViewPort::ViewPort()
 	FetchEventSystem().RegisterMouseMovedEvent(*MouseMoveCallback);
 	MousePressedCallback = new EventCallback<ViewPort, MouseButtonPressedEvent>(this, &ViewPort::onMousePressed);
 	FetchEventSystem().RegisterMouseButtonPressedEvent(*MousePressedCallback);
+	MouseReleasedCallback = new EventCallback<ViewPort, MouseButtonReleasedEvent>(this, &ViewPort::onMouseReleased);
+	FetchEventSystem().RegisteredMouseButtonReleasedEvent(*MouseReleasedCallback);
 
 	m_renderer = new Renderer(*this);
 }
@@ -104,14 +114,15 @@ void ViewPort::setup()
 	const int screenWidth = 1920;
 	const int screenHeight = 990;
 
-	camera.target = { 0 };
-	camera.offset = { screenWidth / 2.0f, screenHeight / 2.0f };
+	camera.target = { screenWidth/2, screenHeight/2 };
+	camera.offset = camera.target;
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
-
+	SetConfigFlags(ConfigFlag::FLAG_WINDOW_RESIZABLE);
 	InitWindow(screenWidth, screenHeight, "Quill");
 	SetWindowPosition(0, 40);
 	SetExitKey(KEY_GRAVE);
+	SetTargetFPS(60);
 
 	/*auto mWidth = GetMonitorWidth(0);
 	auto mHeight = GetMonitorHeight(0);
@@ -144,6 +155,7 @@ void ViewPort::draw()
 			entity.second->Render();
 		}
 		EndMode2D();
+		drawInterface();
 		EndDrawing();
 	}
 	CloseWindow();
@@ -232,11 +244,7 @@ Vector2 ViewPort::GetNormalizedMousePosition() const
 
 Vector2 ViewPort::Vec2ToPixel(const Vector2& vertex) const
 {
-	Vector2 pixelVertex = vertex - camera.offset;
-	pixelVertex += (camera.target * (camera.zoom - 1));
-	pixelVertex = pixelVertex / camera.zoom;
-
-	return pixelVertex;
+	return GetScreenToWorld2D(vertex, camera);
 }
 
 
@@ -245,71 +253,82 @@ Vector2 ViewPort::Vec2ToPixel(const Vector2& vertex) const
 
 bool ViewPort::onMouseScrolled(MouseScrolledEvent& event)
 {
-	Vector2 newTarget = GetNormalizedMousePosition();
-	const float MAX_ZOOM = 3;
-	camera.zoom += event.GetYOffset() * 0.05f;
-	bool clipped = false;
-	if (camera.zoom >= MAX_ZOOM)
-	{
-		camera.zoom = MAX_ZOOM;
+	Vector2 oldTarget = camera.target;
+	auto position = GetMousePosition();
+	Vector2 newTarget = GetScreenToWorld2D(position, camera);
 
-		clipped = true;
-	}
-	if (camera.zoom <= 1)
-	{
-		camera.zoom = 1;
-		clipped = true;
-	}
-	if (!clipped)
-		camera.target = newTarget;
+	auto offset = newTarget - oldTarget;
+	
+	const float MAX_ZOOM = 3;
+	auto zoom = camera.zoom + event.GetYOffset() * 0.01f;
+
+	if (zoom > MAX_ZOOM)
+		return false;
+	if (zoom < 1)
+		return false;
+
+	camera.zoom = zoom;
+	camera.target = newTarget;
+	camera.offset = newTarget;
 
 	return false;
 }
 
 bool ViewPort::onMouseMoved(MouseMovedEvent& event)
 {
-	const int screenWidth = GetScreenWidth();
-	const int screenHeight = GetScreenHeight();
-	Vector2 vertexA = Vector2{ event.GetX(), event.GetY() } -camera.offset;
-	Vector2 vertexB = camera.target;
-
-	Vector2 vec = vertexB - vertexA;
-	double mag = sqrt(vec.x * vec.x + vec.y * vec.y);
-	if (fabs(vertexA.x - vertexB.x) > screenWidth / 3 ||
-		fabs(vertexA.y - vertexB.y) > screenHeight / 3)
+	if (panMode)
 	{
-		float maxX = screenWidth / 2.0f;
-		float maxY = screenHeight / 2.0f;
-		float panFactor = 0.04f * camera.zoom;
-		float xOffset = camera.target.x - (vec.x > 0 ? panFactor : -panFactor);
-		float yOffset = camera.target.y - (vec.y > 0 ? panFactor : -panFactor);
-		if (fabs(xOffset) < maxX)
-			camera.target.x = xOffset;
-		if (fabs(xOffset) < maxY)
-			camera.target.y = yOffset;
+		auto pos = GetMousePosition();
+		auto start = GetScreenToWorld2D(panStart,camera);
+		auto end = GetScreenToWorld2D(pos,camera);
+		auto panDistance = end - start;
+		camera.target = camera.target + panDistance;
+		camera.offset = camera.offset + panDistance*2;
+		panStart = pos;
 	}
-
 	return false;
 }
 
 bool ViewPort::onMousePressed(MouseButtonPressedEvent& event)
 {
-	if (event.GetMouseButton() == MouseCode::RIGHT)
+	auto btn = event.GetMouseButton();
+	if (MouseCode::RIGHT == btn)
 	{
-		auto screenBuffer = GetScreenData();
-		return false;
+		panMode = true;
+		panStart.x = event.GetMousePosition().x;
+		panStart.y = event.GetMousePosition().y;
 	}
-
-	Vector2 vertex = Vector2{ (float)event.GetMousePosition().x, (float)event.GetMousePosition().y };
-	vertex -= camera.offset;
-	vertex += (camera.target * (camera.zoom - 1));
-	vertex = vertex / camera.zoom;
-
 	return false;
 }
 
-MousePosition ViewPort::WindowPointToPixel(MousePosition& windowPoint)
+bool ViewPort::onMouseReleased(MouseButtonReleasedEvent& event)
 {
-	auto pixel = Vec2ToPixel({ windowPoint.x, windowPoint.y });
+	auto btn = event.GetMouseButton();
+	if (MouseCode::RIGHT == btn)
+	{
+		panMode = false;
+		panStart.x = -1;
+		panStart.y = -1;
+	}
+	return false;
+}
+
+void ViewPort::initInterface()
+{
+
+}
+
+void ViewPort::drawInterface()
+{
+	RayGUI::GuiLock();
+	RayGUI::GuiWindowBox(Rectangle({0,0, 1920, 60}), "Tools");
+	RayGUI::GuiButton(Rectangle({ 0,30, 40, 30 }), "Line");
+	RayGUI::GuiButton(Rectangle({ 50,30, 40, 30 }), "Circle");
+	RayGUI::GuiUnlock();
+}
+
+MousePosition ViewPort::WindowPointToPixel(const MousePosition& windowPoint)
+{
+	auto pixel = GetScreenToWorld2D({ windowPoint.x, windowPoint.y }, camera);
 	return MousePosition({ pixel.x, pixel.y });
 }
