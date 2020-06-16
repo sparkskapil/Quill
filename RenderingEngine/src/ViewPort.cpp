@@ -10,10 +10,10 @@
 
 namespace RayGUI
 {
-		// User Interface With RayRayGUI::Gui
-	#define RAYGUI_IMPLEMENTATION
-	#define RAYGUI_SUPPORT_ICONS
-	#include "vendor/raygui/src/raygui.h"
+	// User Interface With RayRayGUI::Gui
+#define RAYGUI_IMPLEMENTATION
+#define RAYGUI_SUPPORT_ICONS
+#include "vendor/raygui/src/raygui.h"
 
 }
 using namespace EventSystem;
@@ -114,8 +114,8 @@ void ViewPort::setup()
 	const int screenWidth = 1920;
 	const int screenHeight = 990;
 
-	camera.target = { screenWidth/2, screenHeight/2 };
-	camera.offset = camera.target;
+	camera.target = { 0, 0 };
+	camera.offset = { screenWidth / 2.0f, screenHeight / 2.0f};
 	camera.rotation = 0.0f;
 	camera.zoom = 1.0f;
 	SetConfigFlags(ConfigFlag::FLAG_WINDOW_RESIZABLE);
@@ -150,6 +150,12 @@ void ViewPort::draw()
 		BeginDrawing();
 		BeginMode2D(camera);
 		ClearBackground(DARKGRAY);
+
+		const int screenWidth = GetScreenWidth();
+		const int screenHeight = GetScreenHeight();
+		DrawLine(camera.target.x, -screenHeight * 10, camera.target.x, screenHeight * 10, GREEN);
+		DrawLine(-screenWidth * 10, camera.target.y, screenWidth * 10, camera.target.y, GREEN);
+
 		for (auto& entity : m_entities)
 		{
 			entity.second->Render();
@@ -157,6 +163,7 @@ void ViewPort::draw()
 		EndMode2D();
 		drawInterface();
 		EndDrawing();
+
 	}
 	CloseWindow();
 
@@ -253,24 +260,15 @@ Vector2 ViewPort::Vec2ToPixel(const Vector2& vertex) const
 
 bool ViewPort::onMouseScrolled(MouseScrolledEvent& event)
 {
-	Vector2 oldTarget = camera.target;
-	auto position = GetMousePosition();
-	Vector2 newTarget = GetScreenToWorld2D(position, camera);
-
-	auto offset = newTarget - oldTarget;
-	
 	const float MAX_ZOOM = 3;
-	auto zoom = camera.zoom + event.GetYOffset() * 0.01f;
+	auto factor = event.GetYOffset() * 0.01f;
+	auto zoom = camera.zoom + factor;
 
 	if (zoom > MAX_ZOOM)
 		return false;
 	if (zoom < 1)
 		return false;
-
 	camera.zoom = zoom;
-	camera.target = newTarget;
-	camera.offset = newTarget;
-
 	return false;
 }
 
@@ -279,11 +277,10 @@ bool ViewPort::onMouseMoved(MouseMovedEvent& event)
 	if (panMode)
 	{
 		auto pos = GetMousePosition();
-		auto start = GetScreenToWorld2D(panStart,camera);
-		auto end = GetScreenToWorld2D(pos,camera);
+		auto start = GetScreenToWorld2D(panStart, camera);
+		auto end = GetScreenToWorld2D(pos, camera);
 		auto panDistance = end - start;
-		camera.target = camera.target + panDistance;
-		camera.offset = camera.offset + panDistance*2;
+		camera.target = camera.target - panDistance;
 		panStart = pos;
 	}
 	return false;
@@ -321,7 +318,7 @@ void ViewPort::initInterface()
 void ViewPort::drawInterface()
 {
 	RayGUI::GuiLock();
-	RayGUI::GuiWindowBox(Rectangle({0,0, 1920, 60}), "Tools");
+	RayGUI::GuiWindowBox(Rectangle({ 0,0, 1920, 60 }), "Tools");
 	RayGUI::GuiButton(Rectangle({ 0,30, 40, 30 }), "Line");
 	RayGUI::GuiButton(Rectangle({ 50,30, 40, 30 }), "Circle");
 	RayGUI::GuiUnlock();
