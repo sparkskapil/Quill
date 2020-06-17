@@ -10,6 +10,8 @@ class IRenderer;
 class IViewPort
 {
 public:
+	virtual ~IViewPort() = default;
+
 	virtual void Attach(DisplayEntity& entity) = 0;
 	virtual void Detach(DisplayEntity& entity) = 0;
 

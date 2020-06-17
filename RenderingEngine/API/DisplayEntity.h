@@ -18,6 +18,8 @@ protected:
 
 public:
 	DisplayEntity(ShapeId id, const std::vector<Vertex2>& vertices);
+	virtual ~DisplayEntity() = default;
+
 	ShapeId GetShapeId() const;
 	DisplayId GetDisplayId() const;
 	virtual void Render() = 0;
