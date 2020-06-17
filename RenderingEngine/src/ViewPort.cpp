@@ -163,7 +163,6 @@ void ViewPort::draw()
 		EndMode2D();
 		drawInterface();
 		EndDrawing();
-
 	}
 	CloseWindow();
 
@@ -264,11 +263,15 @@ bool ViewPort::onMouseScrolled(MouseScrolledEvent& event)
 	auto factor = event.GetYOffset() * 0.01f;
 	auto zoom = camera.zoom + factor;
 
+	auto oldWorldPosition = GetScreenToWorld2D(GetMousePosition(), camera);
 	if (zoom > MAX_ZOOM)
 		return false;
 	if (zoom < 1)
 		return false;
 	camera.zoom = zoom;
+	auto newWorldPosition = GetScreenToWorld2D(GetMousePosition(), camera);
+	auto offset = camera.offset + newWorldPosition - oldWorldPosition;
+	camera.offset = offset;
 	return false;
 }
 
