@@ -6,21 +6,24 @@
 #include "Core/API/Vertex2.h"
 #include "Core/API/Shape.h"
 
-typedef size_t DisplayId;
-
-class DisplayEntity
+namespace RenderingEngine
 {
-	static DisplayId ENTITIES_COUNT;
-protected:
-	DisplayId m_displayId;
-	ShapeId m_shapeId;
-	const std::vector<Vertex2>& m_vertices;
+	typedef size_t DisplayId;
 
-public:
-	DisplayEntity(ShapeId id, const std::vector<Vertex2>& vertices);
-	virtual ~DisplayEntity() = default;
+	class DisplayEntity
+	{
+		static DisplayId ENTITIES_COUNT;
+	protected:
+		DisplayId m_displayId;
+		ShapeId m_shapeId;
+		const std::vector<Vertex2>& m_vertices;
 
-	ShapeId GetShapeId() const;
-	DisplayId GetDisplayId() const;
-	virtual void Render() = 0;
-};
+	public:
+		DisplayEntity(ShapeId id, const std::vector<Vertex2>& vertices);
+		virtual ~DisplayEntity() = default;
+
+		ShapeId GetShapeId() const;
+		DisplayId GetDisplayId() const;
+		virtual void Render() = 0;
+	};
+}

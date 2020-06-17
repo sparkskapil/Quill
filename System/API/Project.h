@@ -14,7 +14,7 @@ public:
 private:
 	IEventCallback* m_MousePressedDelegate;
 	IEventCallback* m_MouseMovedDelegate;
-	IViewPort* m_vp;
+	RenderingEngine::IViewPort* m_vp;
 	
 	IShape* m_tmpShape;
 	

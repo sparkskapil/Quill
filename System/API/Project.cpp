@@ -13,8 +13,8 @@ Project::Project()
 	m_MouseMovedDelegate = new EventCallback<Project, MouseMovedEvent>(this, &Project::WhileDrawing);
 	eventSystem.RegisterMouseMovedEvent(*m_MouseMovedDelegate);
 
-	m_vp = &FetchViewPort();
-	m_Renderer = &FetchRenderer(*m_vp);
+	m_vp = &RenderingEngine::FetchViewPort();
+	m_Renderer = &RenderingEngine::FetchRenderer(*m_vp);
 	m_tmpShape = nullptr;
 }
 

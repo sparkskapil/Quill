@@ -1,6 +1,7 @@
 #include "RenderingEngine/API/ViewPort.h"
 #include "System/API/Project.h"
 
+using namespace RenderingEngine;
 int main(void)
 {
 	FetchViewPort().setup();
