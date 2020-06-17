@@ -62,7 +62,7 @@ namespace RenderingEngine
 			return false;
 		m_camera.zoom = zoom;
 		auto newWorldPosition = GetScreenToWorld2D(GetMousePosition(), m_camera);
-		auto offset = m_camera.offset + newWorldPosition - oldWorldPosition;
+		auto offset = m_camera.offset + (newWorldPosition - oldWorldPosition)*zoom;
 		m_camera.offset = offset;
 		return false;
 	}
