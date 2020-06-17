@@ -36,23 +36,11 @@ namespace RenderingEngine
 
 	ViewPort::ViewPort()
 	{
-		MouseScrollCallback = new EventCallback<ViewPort, MouseScrolledEvent>(this, &ViewPort::onMouseScrolled);
-		FetchEventSystem().RegisterMouseScrolled(*MouseScrollCallback);
-		MouseMoveCallback = new EventCallback<ViewPort, MouseMovedEvent>(this, &ViewPort::onMouseMoved);
-		FetchEventSystem().RegisterMouseMovedEvent(*MouseMoveCallback);
-		MousePressedCallback = new EventCallback<ViewPort, MouseButtonPressedEvent>(this, &ViewPort::onMousePressed);
-		FetchEventSystem().RegisterMouseButtonPressedEvent(*MousePressedCallback);
-		MouseReleasedCallback = new EventCallback<ViewPort, MouseButtonReleasedEvent>(this, &ViewPort::onMouseReleased);
-		FetchEventSystem().RegisteredMouseButtonReleasedEvent(*MouseReleasedCallback);
-
 		m_renderer = new Renderer(*this);
 	}
 
 	ViewPort::~ViewPort()
 	{
-		FetchEventSystem().Unregister(MouseScrollCallback);
-		FetchEventSystem().Unregister(MouseMoveCallback);
-		FetchEventSystem().Unregister(MousePressedCallback);
 	}
 
 
@@ -116,11 +104,11 @@ namespace RenderingEngine
 	{
 		const int screenWidth = 1920;
 		const int screenHeight = 990;
+		Vertex2 target = { 0, 0 };
+		Vertex2 offset = { screenWidth / 2.0f, screenHeight / 2.0f };
 
-		camera.target = { 0, 0 };
-		camera.offset = { screenWidth / 2.0f, screenHeight / 2.0f };
-		camera.rotation = 0.0f;
-		camera.zoom = 1.0f;
+		m_camera.Reset(target, offset);
+
 		SetConfigFlags(ConfigFlag::FLAG_WINDOW_RESIZABLE);
 		InitWindow(screenWidth, screenHeight, "Quill");
 		SetWindowPosition(0, 40);
@@ -151,13 +139,11 @@ namespace RenderingEngine
 		{
 			handleEvents();
 			BeginDrawing();
-			BeginMode2D(camera);
+			BeginMode2D(m_camera.GetCamera());
 			ClearBackground(DARKGRAY);
 
 			const int screenWidth = GetScreenWidth();
 			const int screenHeight = GetScreenHeight();
-			DrawLine(camera.target.x, -screenHeight * 10, camera.target.x, screenHeight * 10, GREEN);
-			DrawLine(-screenWidth * 10, camera.target.y, screenWidth * 10, camera.target.y, GREEN);
 
 			for (auto& entity : m_entities)
 			{
@@ -186,11 +172,6 @@ namespace RenderingEngine
 		}
 		EndDrawing();*/
 	}
-
-
-
-	/* ==================================================================================================== */
-	// Event Dispatcher
 
 	void ViewPort::handleEvents()
 	{
@@ -243,79 +224,6 @@ namespace RenderingEngine
 	}
 
 
-	/* ==================================================================================================== */
-	// Utilities
-
-	Vector2 ViewPort::GetNormalizedMousePosition() const
-	{
-		return Vec2ToPixel(GetMousePosition());
-	}
-
-	Vector2 ViewPort::Vec2ToPixel(const Vector2& vertex) const
-	{
-		return GetScreenToWorld2D(vertex, camera);
-	}
-
-
-	/* ==================================================================================================== */
-	//Event handlers
-
-	bool ViewPort::onMouseScrolled(MouseScrolledEvent& event)
-	{
-		const float MAX_ZOOM = 3;
-		auto factor = event.GetYOffset() * 0.01f;
-		auto zoom = camera.zoom + factor;
-
-		auto oldWorldPosition = GetScreenToWorld2D(GetMousePosition(), camera);
-		if (zoom > MAX_ZOOM)
-			return false;
-		if (zoom < 1)
-			return false;
-		camera.zoom = zoom;
-		auto newWorldPosition = GetScreenToWorld2D(GetMousePosition(), camera);
-		auto offset = camera.offset + newWorldPosition - oldWorldPosition;
-		camera.offset = offset;
-		return false;
-	}
-
-	bool ViewPort::onMouseMoved(MouseMovedEvent& event)
-	{
-		if (panMode)
-		{
-			auto pos = GetMousePosition();
-			auto start = GetScreenToWorld2D(panStart, camera);
-			auto end = GetScreenToWorld2D(pos, camera);
-			auto panDistance = end - start;
-			camera.target = camera.target - panDistance;
-			panStart = pos;
-		}
-		return false;
-	}
-
-	bool ViewPort::onMousePressed(MouseButtonPressedEvent& event)
-	{
-		auto btn = event.GetMouseButton();
-		if (MouseCode::RIGHT == btn)
-		{
-			panMode = true;
-			panStart.x = event.GetMousePosition().x;
-			panStart.y = event.GetMousePosition().y;
-		}
-		return false;
-	}
-
-	bool ViewPort::onMouseReleased(MouseButtonReleasedEvent& event)
-	{
-		auto btn = event.GetMouseButton();
-		if (MouseCode::RIGHT == btn)
-		{
-			panMode = false;
-			panStart.x = -1;
-			panStart.y = -1;
-		}
-		return false;
-	}
-
 	void ViewPort::initInterface()
 	{
 
@@ -332,7 +240,7 @@ namespace RenderingEngine
 
 	MousePosition ViewPort::WindowPointToPixel(const MousePosition& windowPoint)
 	{
-		auto pixel = GetScreenToWorld2D({ windowPoint.x, windowPoint.y }, camera);
+		auto pixel = m_camera.GetScreenToWorld({ windowPoint.x, windowPoint.y });
 		return MousePosition({ pixel.x, pixel.y });
 	}
 }

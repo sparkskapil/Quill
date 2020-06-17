@@ -162,11 +162,13 @@
     <ClInclude Include="API\DisplayEntity.h" />
     <ClInclude Include="API\ViewPort.h" />
     <ClInclude Include="API\ExportSym.h" />
+    <ClInclude Include="src\Camera2D.hxx" />
     <ClInclude Include="src\Renderer.hxx" />
     <ClInclude Include="src\SimpleEntity.hxx" />
     <ClInclude Include="src\ViewPort.hxx" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera2D.cpp" />
     <ClCompile Include="src\DisplayEntity.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\SimpleEntity.cpp" />

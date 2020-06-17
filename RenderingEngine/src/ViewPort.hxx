@@ -4,6 +4,7 @@
 #include "Core/API/Shape.h"
 #include "raylib.h"
 #include "EventSystem/API/EventSystem.h"
+#include <src\Camera2D.hxx>
 
 namespace RenderingEngine
 {
@@ -32,27 +33,10 @@ namespace RenderingEngine
 	private:
 		void handleMouseEvents();
 
-		Vector2 GetNormalizedMousePosition() const;
-		Vector2 Vec2ToPixel(const Vector2& vertex) const;
-
-		bool onMouseScrolled(MouseScrolledEvent& event);
-		bool onMouseMoved(MouseMovedEvent& event);
-		bool onMousePressed(MouseButtonPressedEvent& event);
-		bool onMouseReleased(MouseButtonReleasedEvent& event);
-
 	private:
 		std::map<ShapeId, DisplayEntity*> m_entities;
-		Camera2D camera = { 0 };
+		QuillCamera2D m_camera;
+
 		IRenderer* m_renderer;
-
-		bool panMode = false;
-		Vector2 panStart = { -1,-1 };
-
-		//Event Delegates
-		IEventCallback* MouseScrollCallback;
-		IEventCallback* MouseMoveCallback;
-		IEventCallback* MousePressedCallback;
-		IEventCallback* MouseReleasedCallback;
-
 	};
 }
