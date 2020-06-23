@@ -7,11 +7,7 @@ auto& eventSystem = FetchEventSystem();
 
 Project::Project()
 {
-	m_MousePressedDelegate = new EventCallback<Project, MouseButtonPressedEvent>(this, &Project::onDrawPoint);
-	eventSystem.RegisterMouseButtonPressedEvent(*m_MousePressedDelegate);
-	
-	m_MouseMovedDelegate = new EventCallback<Project, MouseMovedEvent>(this, &Project::WhileDrawing);
-	eventSystem.RegisterMouseMovedEvent(*m_MouseMovedDelegate);
+	RegisterEvents();
 
 	m_vp = &RenderingEngine::FetchViewPort();
 	m_Renderer = &RenderingEngine::FetchRenderer(*m_vp);
@@ -21,7 +17,20 @@ Project::Project()
 Project::~Project()
 {
 	eventSystem.Unregister(m_MousePressedDelegate);
+	eventSystem.Unregister(m_MouseMovedDelegate);
 	m_vp = nullptr;
+}
+
+Project::Project(Project&& project)
+{
+	RegisterEvents();
+	m_vp = project.m_vp;
+	m_Renderer = project.m_Renderer;
+	m_tmpShape = project.m_tmpShape;
+
+	project.m_vp = nullptr;
+	project.m_Renderer = nullptr;
+	project.m_tmpShape = nullptr;
 }
 
 bool Project::onDrawPoint(MouseButtonPressedEvent& event)
@@ -72,4 +81,13 @@ bool Project::WhileDrawing(MouseMovedEvent& event)
 	m_tmpShape->SetRenderer(m_Renderer);
 	m_tmpShape->Render(DrawModes::DRAWING);
 	return false;
+}
+
+void Project::RegisterEvents()
+{
+	m_MousePressedDelegate = new EventCallback<Project, MouseButtonPressedEvent>(this, &Project::onDrawPoint);
+	eventSystem.RegisterMouseButtonPressedEvent(*m_MousePressedDelegate);
+
+	m_MouseMovedDelegate = new EventCallback<Project, MouseMovedEvent>(this, &Project::WhileDrawing);
+	eventSystem.RegisterMouseMovedEvent(*m_MouseMovedDelegate);
 }

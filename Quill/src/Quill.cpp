@@ -1,11 +1,11 @@
 #include "RenderingEngine/API/ViewPort.h"
-#include "System/API/Project.h"
+#include "System/API/ProjectManager.h"
 
 using namespace RenderingEngine;
 int main(void)
 {
 	FetchViewPort().setup();
-	Project project;
+	FetchProjectManager().CreateNewProject();
 	FetchViewPort().draw();
 	return 0;
 }

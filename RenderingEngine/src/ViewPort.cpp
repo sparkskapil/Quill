@@ -114,23 +114,6 @@ namespace RenderingEngine
 		SetWindowPosition(0, 40);
 		SetExitKey(KEY_GRAVE);
 		SetTargetFPS(60);
-
-		/*auto mWidth = GetMonitorWidth(0);
-		auto mHeight = GetMonitorHeight(0);
-		auto mpWidth = GetMonitorPhysicalWidth(0);
-		auto mpHeight = GetMonitorPhysicalHeight(0);
-
-		dp = round(mpWidth*1000.0 / mWidth) / 1000;
-
-		for (int i = 0; i < std::max(GetScreenWidth(), GetScreenHeight()); i++)
-		{
-			int mm = round(dp * i);
-			if (millimeters.find(mm) == millimeters.end())
-			{
-				millimeters.insert(mm);
-			}
-		}*/
-
 	}
 
 	void ViewPort::draw()
@@ -154,23 +137,6 @@ namespace RenderingEngine
 			EndDrawing();
 		}
 		CloseWindow();
-
-		/*BeginDrawing();
-
-		for (auto& mm : millimeters)
-		{
-			auto len = 15.0f;
-			auto offset = 40.0f;
-			if ((mm) % 10 == 0)
-				len = 30.0f;
-
-			int pixel = mm / dp;
-			if (pixel <= GetScreenWidth())
-				DrawLine(int(mm / dp) + offset, 0, int(mm / dp) + offset, 0 + len, RAYWHITE);
-			if (pixel <= GetScreenHeight())
-				DrawLine(0, offset + int(mm / dp), 0 + len, offset + int(mm / dp), RAYWHITE);
-		}
-		EndDrawing();*/
 	}
 
 	void ViewPort::handleEvents()

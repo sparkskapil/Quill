@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="API\Project.cpp" />
+    <ClCompile Include="API\ProjectManager.cpp" />
     <ClCompile Include="API\Tool.cpp" />
     <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
