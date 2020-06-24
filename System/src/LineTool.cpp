@@ -1,5 +1,4 @@
-#include "Tool.h"
-
+#include "LineTool.hxx"
 #include "Core/src/Line.hxx"
 
 LineTool::LineTool() : m_currentShape(nullptr)

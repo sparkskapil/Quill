@@ -161,12 +161,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="API\Project.cpp" />
-    <ClCompile Include="API\ProjectManager.cpp" />
-    <ClCompile Include="API\Tool.cpp" />
-    <ClCompile Include="src\Source.cpp" />
+    <ClCompile Include="src\Project.cpp" />
+    <ClCompile Include="src\ProjectManager.cpp" />
+    <ClCompile Include="src\LineTool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\LineTool.hxx" />
     <ClInclude Include="API\Project.h" />
     <ClInclude Include="API\ProjectManager.h" />
     <ClInclude Include="API\Tool.h" />

@@ -1,5 +1,5 @@
 #pragma once
-#include "Tool.h"
+#include "System/src/LineTool.hxx"
 #include "EventSystem/API/EventSystem.h"
 #include "RenderingEngine/API/ViewPort.h"
 
@@ -16,9 +16,6 @@ public:
 
 private:
 	void RegisterEvents();
-
-
-
 
 private:
 	IEventCallback* m_MousePressedDelegate;
