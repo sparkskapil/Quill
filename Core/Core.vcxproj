@@ -147,9 +147,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Circle.cpp" />
     <ClCompile Include="src\Shape.cpp" />
     <ClCompile Include="src\Line.cpp" />
-    <ClCompile Include="src\Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="API\CoreSym.h" />
@@ -157,6 +157,7 @@
     <ClInclude Include="API\Renderer.h" />
     <ClInclude Include="API\Shape.h" />
     <ClInclude Include="API\Vertex2.h" />
+    <ClInclude Include="src\Circle.hxx" />
     <ClInclude Include="src\Line.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

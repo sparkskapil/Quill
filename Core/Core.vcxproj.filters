@@ -33,15 +33,18 @@
     <ClInclude Include="API\QuillTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Circle.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Line.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Circle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
