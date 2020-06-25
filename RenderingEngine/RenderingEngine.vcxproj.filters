@@ -24,9 +24,6 @@
     <ClInclude Include="src\Renderer.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SimpleEntity.hxx">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\ViewPort.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -39,6 +36,12 @@
     <ClInclude Include="src\Camera2D.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\DisplayEntities\EntityFactory.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DisplayEntities\LineEntity.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DisplayEntity.cpp">
@@ -47,13 +50,16 @@
     <ClCompile Include="src\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SimpleEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ViewPort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DisplayEntities\LineEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DisplayEntities\EntityFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

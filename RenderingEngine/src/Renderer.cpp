@@ -1,27 +1,17 @@
 #include "Renderer.hxx"
 #include "API/ViewPort.h"
-#include "SimpleEntity.hxx"
+#include "DisplayEntities/EntityFactory.hxx"
+
 namespace RenderingEngine
 {
 	Renderer::Renderer(IViewPort& viewPort) :m_vp(&viewPort)
 	{
 	}
 
-	void Renderer::draw(const std::vector<Vertex2>& vertices, ShapeId id, DrawModes mode)
+	void Renderer::draw(const RenderProps& shapeProps)
 	{
-		SimpleEntity* entity = nullptr;
-		if (mode == DrawModes::DRAWN)
-		{
-			entity = new SimpleEntity(id, vertices);
-			entity->SetVertexColor(RED);
-		}
-		else
-		{
-			entity = new SimpleEntity(id, vertices);
-			entity->SetVertexColor(SKYBLUE);
-			entity->SetEdgeColor(DARKBLUE);
-		}
-		m_vp->Attach(*entity);
+		DisplayEntity& entity = EntityGenerator::CreateEntity(shapeProps);
+		m_vp->Attach(entity);
 	}
 
 	void Renderer::clear(ShapeId id)

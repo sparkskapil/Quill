@@ -16,6 +16,7 @@ public:
 	virtual void RemoveVertex(int index) override;
 	virtual void ReplaceVertex(int index, Vertex2 newVertex) override;
 	virtual bool IsFinished() const override;
+	virtual ShapeType GetType() const override;
 
 	virtual IShape* clone() const override;
 
@@ -27,4 +28,5 @@ private:
 
 	// Center and Point on Circumference
 	static const size_t MAX_VERTICES = 2;
+
 };

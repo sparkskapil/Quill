@@ -1,5 +1,5 @@
 #pragma once
-#include "System/src/LineTool.hxx"
+#include "System/API/Tool.h"
 #include "EventSystem/API/EventSystem.h"
 #include "RenderingEngine/API/ViewPort.h"
 
@@ -24,6 +24,7 @@ private:
 	
 	IShape* m_tmpShape;
 	
-	LineTool tool;
+	std::shared_ptr<ITool> m_tool = nullptr;
+
 	IRenderer* m_Renderer;
 };

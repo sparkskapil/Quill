@@ -1,5 +1,6 @@
 #include "System/API/Project.h"
 #include "System/API/Tool.h"
+#include "LineTool.hxx"
 
 using namespace EventSystem;
 
@@ -7,11 +8,12 @@ auto& eventSystem = FetchEventSystem();
 
 Project::Project()
 {
-	RegisterEvents();
-
+	m_tool = std::make_shared<LineTool>();
 	m_vp = &RenderingEngine::FetchViewPort();
 	m_Renderer = &RenderingEngine::FetchRenderer(*m_vp);
 	m_tmpShape = nullptr;
+
+	RegisterEvents();
 }
 
 Project::~Project()
@@ -23,32 +25,36 @@ Project::~Project()
 
 Project::Project(Project&& project)
 {
-	RegisterEvents();
 	m_vp = project.m_vp;
 	m_Renderer = project.m_Renderer;
 	m_tmpShape = project.m_tmpShape;
+	m_tool = project.m_tool;
 
 	project.m_vp = nullptr;
 	project.m_Renderer = nullptr;
 	project.m_tmpShape = nullptr;
+
+	RegisterEvents();
 }
 
 bool Project::onDrawPoint(MouseButtonPressedEvent& event)
 {
+	if (!m_tool) return false;
+
 	if (event.GetMouseButton() != MouseCode::LEFT)
 		return false;
 
 	MousePosition pos = event.GetMousePosition();
 	pos = m_vp->WindowPointToPixel(pos);
 
-	if (!tool.IsDrawing())
-		tool.BeginDrawing();
+	if (!m_tool->IsDrawing())
+		m_tool->BeginDrawing();
 
-	tool.AddPoint({ pos.x, pos.y });
+	m_tool->AddPoint({ pos.x, pos.y });
 
-	if (!tool.IsDrawing())
+	if (!m_tool->IsDrawing())
 	{
-		auto shape = tool.GetLatestShape();
+		auto shape = m_tool->GetLatestShape();
 		if (shape)
 		{
 			shape->SetRenderer(m_Renderer);
@@ -61,7 +67,9 @@ bool Project::onDrawPoint(MouseButtonPressedEvent& event)
 
 bool Project::WhileDrawing(MouseMovedEvent& event)
 {
-	if (!tool.IsDrawing())
+	if (!m_tool) return false;
+
+	if (!m_tool->IsDrawing())
 	{
 		if (m_tmpShape)
 			delete m_tmpShape;
@@ -74,7 +82,7 @@ bool Project::WhileDrawing(MouseMovedEvent& event)
 
 	if (!m_tmpShape)
 	{
-		m_tmpShape = tool.GetCurrentShape()->clone();
+		m_tmpShape = m_tool->GetCurrentShape()->clone();
 		m_tmpShape->AddVertex({pos.x, pos.y});
 	}
 	m_tmpShape->ReplaceVertex(1,{ pos.x, pos.y });

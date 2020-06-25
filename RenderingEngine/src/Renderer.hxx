@@ -13,7 +13,7 @@ namespace RenderingEngine
 	public:
 		Renderer(IViewPort& viewPort);
 
-		virtual void draw(const std::vector<Vertex2>& vertices, ShapeId id, DrawModes mode = DrawModes::DRAWN) override;
+		virtual void draw(const RenderProps& shapeProps) override;
 		virtual void clear(ShapeId id) override;
 
 	private:

@@ -3,7 +3,6 @@
 #include "RenderingEngine/API/Commons.h"
 #include "API/DisplayEntity.h"
 #include "ViewPort.hxx"
-#include "SimpleEntity.hxx"
 #include "Core/src/Line.hxx"
 #include "Renderer.hxx"
 #include <future>

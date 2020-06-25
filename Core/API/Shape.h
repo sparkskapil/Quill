@@ -25,11 +25,12 @@ public:
 	virtual void RemoveVertex(int index) = 0;
 	virtual void ReplaceVertex(int index, Vertex2 newVertex) = 0;
 	virtual bool IsFinished() const = 0;
+	virtual ShapeType GetType() const = 0;
 	virtual const std::vector<Vertex2>& GetVertices() const;
 
 	virtual IShape* clone() const = 0;
 
-	ShapeId GetId() const;
+	ShapeId GetId() const { return m_id; };
 	void SetRenderer(IRenderer* renderer);
 	void ClearRenderer();
 	void Render(DrawModes mode = DrawModes::DRAWN) const;

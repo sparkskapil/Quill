@@ -1,14 +1,14 @@
 
-#include "SimpleEntity.hxx"
+#include "LineEntity.hxx"
 
 namespace RenderingEngine
 {
-	SimpleEntity::SimpleEntity(ShapeId id, const std::vector<Vertex2>& vertices) : DisplayEntity(id, vertices)
+	LineEntity::LineEntity(ShapeId id, const std::vector<Vertex2>& vertices) : DisplayEntity(id, vertices)
 	{
-		SetColors(RAYWHITE);
+		SetColors(RAYWHITE, RAYWHITE, RAYWHITE);
 	}
 
-	void SimpleEntity::Render()
+	void LineEntity::Render()
 	{
 		const Vertex2* preVertex = nullptr;
 		for (int i = 0; i < m_vertices.size(); i++)
@@ -23,24 +23,24 @@ namespace RenderingEngine
 		}
 	}
 
-	void SimpleEntity::SetColors(Color vertexColor, Color edgeColor, Color fillColor)
+	void LineEntity::SetColors(Color vertexColor, Color edgeColor, Color fillColor)
 	{
 		m_vertexColor = vertexColor;
 		m_edgeColor = edgeColor;
 		m_fillColor = fillColor;
 	}
 
-	void SimpleEntity::SetVertexColor(Color vertexColor)
+	void LineEntity::SetVertexColor(Color vertexColor)
 	{
 		m_vertexColor = vertexColor;
 	}
 
-	void SimpleEntity::SetEdgeColor(Color edgeColor)
+	void LineEntity::SetEdgeColor(Color edgeColor)
 	{
 		m_edgeColor = edgeColor;
 	}
 
-	void SimpleEntity::SetFillColor(Color fillColor)
+	void LineEntity::SetFillColor(Color fillColor)
 	{
 		m_fillColor = fillColor;
 	}

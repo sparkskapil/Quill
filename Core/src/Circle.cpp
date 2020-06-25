@@ -77,3 +77,8 @@ IShape* Circle::clone() const
 	circle->m_vertices.insert(circle->m_vertices.begin(), m_vertices.begin(), m_vertices.end());
 	return circle;
 }
+
+ShapeType Circle::GetType() const
+{
+	return ShapeType::Circle;
+}

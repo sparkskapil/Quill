@@ -70,6 +70,11 @@ bool Line::IsFinished() const
 	return isFinished;
 }
 
+ShapeType Line::GetType() const
+{
+	return ShapeType::Line;
+}
+
 IShape* Line::clone() const
 {
 	Line* line = new Line(-1);

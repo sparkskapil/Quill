@@ -5,11 +5,11 @@ const std::vector<Vertex2>& IShape::GetVertices() const
 {
 	return m_vertices;
 }
-
-ShapeId IShape::GetId() const
-{
-	return m_id;
-}
+//
+//ShapeId IShape::GetId() const
+//{
+//	return m_id;
+//}
 
 void IShape::SetRenderer(IRenderer* renderer)
 {
@@ -23,8 +23,15 @@ void IShape::ClearRenderer()
 
 void IShape::Render(DrawModes mode) const
 {
-	if(m_renderer)
-		m_renderer->draw(m_vertices, m_id, mode);
+	if (m_renderer)
+	{
+		const Vertices& vertices = GetVertices();
+		RenderProps props({ vertices });
+		props.id = GetId();
+		props.type = GetType();
+		props.mode = mode;
+		m_renderer->draw(props);
+	}
 }
 
 IShape::IShape() :m_renderer(nullptr), m_vertices({}), m_id(++SHAPES_COUNT)
