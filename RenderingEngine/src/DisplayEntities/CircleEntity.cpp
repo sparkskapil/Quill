@@ -13,9 +13,11 @@ namespace RenderingEngine
 		{
 			auto center = m_vertices[0];
 			auto point = m_vertices[1];
+			auto radius = (float)point.Distance(center);
 			// Center and Point on Circumference Mode 
 			DrawCircle( (int)center.x, (int)center.y, 1.0f, m_vertexColor);
-			DrawCircle( (int)center.x, (int)center.y, (float)point.Distance(center), m_edgeColor);
+			DrawCircle((int)center.x, (int)center.y, radius, m_fillColor);
+			DrawCircleLines((int)center.x, (int)center.y, radius, m_edgeColor);
 		}
 	}
 

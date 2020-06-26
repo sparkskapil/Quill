@@ -10,8 +10,10 @@ namespace RenderingEngine
 		{
 		case  ShapeType::Line:
 			return CreateLineEntity(shapeProps);
+		case  ShapeType::Circle:
+			return CreateCircleEntity(shapeProps);
 		default:
-			break;
+			return CreateLineEntity(shapeProps);
 		}
 	}
 
@@ -27,7 +29,7 @@ namespace RenderingEngine
 		}
 		entity->SetEdgeColor(edgeColor);
 		entity->SetVertexColor(vertexColor);
-		
+
 		return *entity;
 	}
 
@@ -43,6 +45,7 @@ namespace RenderingEngine
 		}
 		entity->SetEdgeColor(edgeColor);
 		entity->SetVertexColor(vertexColor);
+		entity->SetFillColor(BLANK);
 
 		return *entity;
 	}
