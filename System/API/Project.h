@@ -16,6 +16,7 @@ public:
 
 private:
 	void RegisterEvents();
+	void AttachShape();
 
 private:
 	IEventCallback* m_MousePressedDelegate;

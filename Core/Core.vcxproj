@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Circle.cpp" />
+    <ClCompile Include="src\Polyline.cpp" />
     <ClCompile Include="src\Shape.cpp" />
     <ClCompile Include="src\Line.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="API\Vertex2.h" />
     <ClInclude Include="src\Circle.hxx" />
     <ClInclude Include="src\Line.hxx" />
+    <ClInclude Include="src\Polyline.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

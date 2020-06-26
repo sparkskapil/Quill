@@ -161,15 +161,19 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PolylineTool.cpp" />
     <ClCompile Include="src\Project.cpp" />
     <ClCompile Include="src\ProjectManager.cpp" />
     <ClCompile Include="src\LineTool.cpp" />
+    <ClCompile Include="src\CircleTool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CircleTool.hxx" />
     <ClInclude Include="src\LineTool.hxx" />
     <ClInclude Include="API\Project.h" />
     <ClInclude Include="API\ProjectManager.h" />
     <ClInclude Include="API\Tool.h" />
+    <ClInclude Include="src\PolylineTool.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
