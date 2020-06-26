@@ -5,11 +5,11 @@ const std::vector<Vertex2>& IShape::GetVertices() const
 {
 	return m_vertices;
 }
-//
-//ShapeId IShape::GetId() const
-//{
-//	return m_id;
-//}
+
+ShapeId IShape::GetId() const
+{
+	return m_id;
+}
 
 void IShape::SetRenderer(IRenderer* renderer)
 {

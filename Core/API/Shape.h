@@ -30,7 +30,7 @@ public:
 
 	virtual IShape* clone() const = 0;
 
-	ShapeId GetId() const { return m_id; };
+	ShapeId GetId() const;
 	void SetRenderer(IRenderer* renderer);
 	void ClearRenderer();
 	void Render(DrawModes mode = DrawModes::DRAWN) const;
