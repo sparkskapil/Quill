@@ -163,6 +163,7 @@
     <ClInclude Include="API\ViewPort.h" />
     <ClInclude Include="API\ExportSym.h" />
     <ClInclude Include="src\Camera2D.hxx" />
+    <ClInclude Include="src\DisplayEntities\CircleEntity.hxx" />
     <ClInclude Include="src\DisplayEntities\EntityFactory.hxx" />
     <ClInclude Include="src\Renderer.hxx" />
     <ClInclude Include="src\DisplayEntities\LineEntity.hxx" />
@@ -170,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Camera2D.cpp" />
+    <ClCompile Include="src\DisplayEntities\CircleEntity.cpp" />
     <ClCompile Include="src\DisplayEntities\EntityFactory.cpp" />
     <ClCompile Include="src\DisplayEntity.cpp" />
     <ClCompile Include="src\Renderer.cpp" />

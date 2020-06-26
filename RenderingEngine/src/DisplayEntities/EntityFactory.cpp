@@ -1,6 +1,6 @@
 #include "EntityFactory.hxx"
 #include "LineEntity.hxx"
-#include "Core/API/QuillTypes.h"
+#include "CircleEntity.hxx"
 
 namespace RenderingEngine
 {
@@ -28,6 +28,22 @@ namespace RenderingEngine
 		entity->SetEdgeColor(edgeColor);
 		entity->SetVertexColor(vertexColor);
 		
+		return *entity;
+	}
+
+	DisplayEntity& EntityGenerator::CreateCircleEntity(const RenderProps& shapeProps)
+	{
+		auto entity = new CircleEntity(shapeProps.id, shapeProps.vertices);
+		auto edgeColor = RAYWHITE;
+		auto vertexColor = RED;
+		if (shapeProps.mode == DrawModes::DRAWING)
+		{
+			edgeColor = DARKBLUE;
+			vertexColor = SKYBLUE;
+		}
+		entity->SetEdgeColor(edgeColor);
+		entity->SetVertexColor(vertexColor);
+
 		return *entity;
 	}
 }
