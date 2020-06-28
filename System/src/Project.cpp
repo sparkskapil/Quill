@@ -3,6 +3,7 @@
 #include "LineTool.hxx"
 #include "CircleTool.hxx"
 #include "PolylineTool.hxx"
+#include "PolygonTool.hxx"
 
 using namespace EventSystem;
 
@@ -10,7 +11,7 @@ auto& eventSystem = FetchEventSystem();
 
 Project::Project()
 {
-	m_tool = std::make_shared<CircleTool>();
+	m_tool = std::make_shared<PolygonTool>();
 	m_vp = &RenderingEngine::FetchViewPort();
 	m_Renderer = &RenderingEngine::FetchRenderer(*m_vp);
 	m_tmpShape = nullptr;

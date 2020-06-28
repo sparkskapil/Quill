@@ -161,6 +161,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PolygonTool.cpp" />
     <ClCompile Include="src\PolylineTool.cpp" />
     <ClCompile Include="src\Project.cpp" />
     <ClCompile Include="src\ProjectManager.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="API\Project.h" />
     <ClInclude Include="API\ProjectManager.h" />
     <ClInclude Include="API\Tool.h" />
+    <ClInclude Include="src\PolygonTool.hxx" />
     <ClInclude Include="src\PolylineTool.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
