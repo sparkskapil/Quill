@@ -1,6 +1,7 @@
 #include "EntityFactory.hxx"
 #include "LineEntity.hxx"
 #include "CircleEntity.hxx"
+#include "PolygonEntity.hxx"
 
 namespace RenderingEngine
 {
@@ -12,6 +13,8 @@ namespace RenderingEngine
 			return CreateLineEntity(shapeProps);
 		case  ShapeType::Circle:
 			return CreateCircleEntity(shapeProps);
+		case  ShapeType::Polygon:
+			return CreatePolygonEntity(shapeProps);
 		default:
 			return CreateLineEntity(shapeProps);
 		}
@@ -24,8 +27,8 @@ namespace RenderingEngine
 		auto vertexColor = RED;
 		if (shapeProps.mode == DrawModes::DRAWING)
 		{
-			edgeColor = DARKBLUE;
-			vertexColor = SKYBLUE;
+			edgeColor = SKYBLUE;
+			vertexColor = DARKBLUE;
 		}
 		entity->SetEdgeColor(edgeColor);
 		entity->SetVertexColor(vertexColor);
@@ -40,8 +43,25 @@ namespace RenderingEngine
 		auto vertexColor = RED;
 		if (shapeProps.mode == DrawModes::DRAWING)
 		{
-			edgeColor = DARKBLUE;
-			vertexColor = SKYBLUE;
+			edgeColor = SKYBLUE;
+			vertexColor = DARKBLUE;
+		}
+		entity->SetEdgeColor(edgeColor);
+		entity->SetVertexColor(vertexColor);
+		entity->SetFillColor(BLANK);
+
+		return *entity;
+	}
+
+	DisplayEntity& EntityGenerator::CreatePolygonEntity(const RenderProps& shapeProps)
+	{
+		auto entity = new PolygonEntity(shapeProps.id, shapeProps.vertices);
+		auto edgeColor = RAYWHITE;
+		auto vertexColor = RED;
+		if (shapeProps.mode == DrawModes::DRAWING)
+		{
+			edgeColor = SKYBLUE;
+			vertexColor = DARKBLUE;
 		}
 		entity->SetEdgeColor(edgeColor);
 		entity->SetVertexColor(vertexColor);

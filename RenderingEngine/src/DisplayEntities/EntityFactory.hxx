@@ -12,5 +12,6 @@ namespace RenderingEngine
 	private:
 		static DisplayEntity& CreateLineEntity(const RenderProps& shapeProps);
 		static DisplayEntity& CreateCircleEntity(const RenderProps& shapeProps);
+		static DisplayEntity& CreatePolygonEntity(const RenderProps& shapeProps);
 	};
 }

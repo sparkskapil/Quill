@@ -21,19 +21,13 @@
     <ClInclude Include="API\ViewPort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Renderer.hxx">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ViewPort.hxx">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="API\ExportSym.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="API\Commons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Camera2D.hxx">
+    <ClInclude Include="src\DisplayEntities\CircleEntity.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\DisplayEntities\EntityFactory.hxx">
@@ -42,11 +36,32 @@
     <ClInclude Include="src\DisplayEntities\LineEntity.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DisplayEntities\CircleEntity.hxx">
+    <ClInclude Include="src\DisplayEntities\PolygonEntity.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera2D.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Renderer.hxx">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ViewPort.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DisplayEntities\CircleEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DisplayEntities\EntityFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DisplayEntities\LineEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\DisplayEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -56,16 +71,7 @@
     <ClCompile Include="src\ViewPort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Camera2D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DisplayEntities\LineEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DisplayEntities\EntityFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DisplayEntities\CircleEntity.cpp">
+    <ClCompile Include="src\DisplayEntities\PolygonEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
