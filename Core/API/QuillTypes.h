@@ -12,7 +12,8 @@ enum class ShapeType
 {
 	Point,
 	Line,
-	Circle
+	Circle,
+	Polygon
 };
 
 typedef size_t ShapeId;
