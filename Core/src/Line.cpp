@@ -51,14 +51,14 @@ void Line::AddVertex(const Vertex2& vertex)
 		EndShape();
 }
 
-void Line::RemoveVertex(int index)
+void Line::RemoveVertex(size_t index)
 {
 	if (index >= m_vertices.size())
 		throw std::exception("Invalid Index");
 	m_vertices.erase(m_vertices.begin() + index, m_vertices.begin() + index + 1);
 }
 
-void Line::ReplaceVertex(int index, Vertex2 newVertex)
+void Line::ReplaceVertex(size_t index, Vertex2 newVertex)
 {
 	if (index >= m_vertices.size())
 		throw std::exception("Invalid Index");

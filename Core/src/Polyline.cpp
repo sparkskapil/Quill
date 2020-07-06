@@ -40,14 +40,14 @@ void Polyline::AddVertex(const Vertex2& vertex)
 	m_vertices.push_back(vertex);
 }
 
-void Polyline::RemoveVertex(int index)
+void Polyline::RemoveVertex(size_t index)
 {
 	if (index >= m_vertices.size())
 		throw std::exception("Invalid Index");
 	m_vertices.erase(m_vertices.begin() + index, m_vertices.begin() + index + 1);
 }
 
-void Polyline::ReplaceVertex(int index, Vertex2 newVertex)
+void Polyline::ReplaceVertex(size_t index, Vertex2 newVertex)
 {
 	if (index >= m_vertices.size())
 		throw std::exception("Invalid Index");

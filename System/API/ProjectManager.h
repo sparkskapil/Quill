@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "Project.h"
 
+class Project;
 class ProjectManager
 {
 protected:

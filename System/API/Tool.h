@@ -1,6 +1,5 @@
 #pragma once
 #include "Core/API/Shape.h"
-#include <map>
 
 class ITool
 {

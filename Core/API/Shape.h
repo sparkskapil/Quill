@@ -22,8 +22,8 @@ public:
 	virtual void BeginShape() = 0;
 	virtual void EndShape() = 0;
 	virtual void AddVertex(const Vertex2& vertex) = 0;
-	virtual void RemoveVertex(int index) = 0;
-	virtual void ReplaceVertex(int index, Vertex2 newVertex) = 0;
+	virtual void RemoveVertex(size_t index) = 0;
+	virtual void ReplaceVertex(size_t index, Vertex2 newVertex) = 0;
 	virtual bool IsFinished() const = 0;
 	virtual ShapeType GetType() const = 0;
 	virtual const std::vector<Vertex2>& GetVertices() const;

@@ -51,14 +51,14 @@ void Circle::AddVertex(const Vertex2& vertex)
 		EndShape();
 }
 
-void Circle::RemoveVertex(int index)
+void Circle::RemoveVertex(size_t index)
 {
 	if (index >= m_vertices.size())
 		throw std::exception("Invalid Index");
 	m_vertices.erase(m_vertices.begin() + index, m_vertices.begin() + index + 1);
 }
 
-void Circle::ReplaceVertex(int index, Vertex2 newVertex)
+void Circle::ReplaceVertex(size_t index, Vertex2 newVertex)
 {
 	if (index >= m_vertices.size())
 		throw std::exception("Invalid Index");
