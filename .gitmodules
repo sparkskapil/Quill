@@ -1,7 +1,3 @@
 [submodule "vendor/raygui"]
 	path = vendor/raygui
 	url = https://github.com/raysan5/raygui.git
-[submodule "vendor/imgui"]
-	path = vendor/imgui
-	url = https://github.com/ocornut/imgui.git
-	branch = docking
